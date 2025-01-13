@@ -27,8 +27,37 @@ let pokemonList = [
   { name: "Magneton", height: 1.0, type: ["electric", "steel"] }
 ];
 
-for (let i = 0; i < pokemonList.length; i++) {
-  let pokemon = pokemonList[i];
-  document.write(pokemon.name + " - Height: " + pokemon.height + " meters<br>");
+// Select the Pokémon list container
+let pokemonListContainer = document.querySelector('.pokemon-list');
+
+// Loop through the Pokémon array and create the list items
+pokemonList.forEach(function(pokemon) {
+  // Create the list item
+  let li = document.createElement('li');
+  li.classList.add('pokemon-item');
+
+  // Create the Pokémon name element
+  let nameElement = document.createElement('div');
+  nameElement.classList.add('pokemon-name');
+  nameElement.textContent = pokemon.name;
+
+  // Create the Pokémon height element
+  let heightElement = document.createElement('div');
+  heightElement.classList.add('pokemon-height');
+  heightElement.textContent = "Height: " + pokemon.height + " meters";
+
+   // Create a note element if the height is greater than 1.7 meters
+   if (pokemon.height > 1.7) {
+    let noteElement = document.createElement('div');
+    noteElement.classList.add('pokemon-note');
+    noteElement.textContent = "Wow, that’s big!";
+    li.appendChild(noteElement);
 }
-  
+
+  // Append the name and height to the list item
+  li.appendChild(nameElement);
+  li.appendChild(heightElement);
+
+  // Append the list item to the Pokémon list container
+  pokemonListContainer.appendChild(li);
+});
