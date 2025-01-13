@@ -1,0 +1,83 @@
+/* Reset some default styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    padding: 20px;
+}
+
+/* Style the Pokémon list using CSS Grid */
+ul.pokemon-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Create columns that adjust based on screen size */
+    gap: 20px;
+    justify-items: center; /* Centers each item in its grid cell */
+}
+
+/* Style each Pokémon item */
+.pokemon-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Hover effect for Pokémon items */
+.pokemon-item:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+/* Pokémon name styles with different colors */
+.pokemon-name {
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 10px;
+    /* Random colors for each Pokémon name */
+    color: #4CAF50; /* Default color (green) for the first one */
+}
+
+/* Style for Pokémon height */
+.pokemon-height {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Example of using CSS nth-child selectors to give different colors to Pokémon names */
+ul.pokemon-list li:nth-child(odd) .pokemon-name {
+    color: #FF5733; /* Red for odd-numbered Pokémon */
+}
+
+ul.pokemon-list li:nth-child(even) .pokemon-name {
+    color: #3498db; /* Blue for even-numbered Pokémon */
+}
+
+ul.pokemon-list li:nth-child(3n) .pokemon-name {
+    color: #9b59b6; /* Purple for every third Pokémon */
+}
+
+ul.pokemon-list li:nth-child(4n) .pokemon-name {
+    color: #f39c12; /* Orange for every fourth Pokémon */
+}
+
+/* Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+    ul.pokemon-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Make columns smaller on mobile devices */
+    }
+}
