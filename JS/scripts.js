@@ -1,80 +1,112 @@
 let pokemonRepository = (function () {
-  let pokemonList = [
-      { name: "Bulbasaur", height: 0.7, type: ["grass", "poison"] },
-      { name: "Ivysaur", height: 1.0, type: ["grass", "poison"] },
-      { name: "Venusaur", height: 2.0, type: ["grass", "poison"] },
-      { name: "Charmander", height: 0.6, type: ["fire"] },
-      { name: "Charmeleon", height: 1.1, type: ["fire"] },
-      { name: "Charizard", height: 1.7, type: ["fire", "flying"] },
-      { name: "Squirtle", height: 0.5, type: ["water"] },
-      { name: "Wartortle", height: 1.0, type: ["water"] },
-      { name: "Blastoise", height: 1.6, type: ["water"] },
-      { name: "Caterpie", height: 0.3, type: ["bug"] },
-      { name: "Metapod", height: 0.7, type: ["bug"] },
-      { name: "Butterfree", height: 1.1, type: ["bug", "flying"] },
-      { name: "Pidgey", height: 0.3, type: ["normal", "flying"] },
-      { name: "Pidgeot", height: 1.5, type: ["normal", "flying"] },
-      { name: "Rattata", height: 0.3, type: ["normal"] },
-      { name: "Raticate", height: 0.7, type: ["normal"] },
-      { name: "Zubat", height: 0.8, type: ["poison", "flying"] },
-      { name: "Golbat", height: 1.6, type: ["poison", "flying"] },
-      { name: "Oddish", height: 0.5, type: ["grass", "poison"] },
-      { name: "Gloom", height: 0.8, type: ["grass", "poison"] },
-      { name: "Vileplume", height: 1.2, type: ["grass", "poison"] },
-      { name: "Machop", height: 0.8, type: ["fighting"] },
-      { name: "Machoke", height: 1.5, type: ["fighting"] },
-      { name: "Machamp", height: 1.6, type: ["fighting"] },
-      { name: "Magnemite", height: 0.3, type: ["electric", "steel"] },
-      { name: "Magneton", height: 1.0, type: ["electric", "steel"] }
-  ];
+    let pokemonList = [];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/';
+    let pokemonListContainer = document.querySelector(".pokemon-list");
+    let loadingMessage = document.getElementById('loading-message');
 
-  function getAll() {
-      return pokemonList;
-  }
+    function getAll() {
+        return pokemonList;
+    }
 
-  function add(pokemon) {
-      if (
-          typeof pokemon === "object" &&
-          "name" in pokemon &&
-          "height" in pokemon &&
-          "type" in pokemon
-      ) {
-          pokemonList.push(pokemon);
-      } else {
-          console.error("Invalid Pokémon format");
-      }
-  }
+    function add(pokemon) {
+        if (typeof pokemon === "object" && "name" in pokemon && "detailsUrl" in pokemon && !pokemonList.find(p => p.name === pokemon.name)) {
+            pokemonList.push(pokemon);
+        } else if (pokemonList.find(p => p.name === pokemon.name)){
+          console.error("Duplicate Pokemon");
+        } else {
+            console.error("Invalid Pokémon format");
+        }
+    }
 
-  function addListItem(pokemon) {
-      let pokemonListContainer = document.querySelector(".pokemon-list");
-      let listItem = document.createElement("li");
-      listItem.classList.add("pokemon-item");
+    function addListItem(pokemon) {
+        let listItem = document.createElement("li");
+        listItem.classList.add("pokemon-item");
 
-      let button = document.createElement("button");
-      button.textContent = pokemon.name;
-      button.classList.add("pokemon-button");
-      
-      // Event listener for the button
-      button.addEventListener("click", function () {
-          showDetails(pokemon);
-      });
+        let button = document.createElement("button");
+        button.textContent = pokemon.name;
+        button.classList.add("pokemon-button");
 
-      listItem.appendChild(button);
-      pokemonListContainer.appendChild(listItem);
-  }
+        button.addEventListener("click", function () {
+            showDetails(pokemon);
+        });
 
-  function showDetails(pokemon) {
-      console.log(pokemon);
-  }
+        listItem.appendChild(button);
+        pokemonListContainer.appendChild(listItem);
+    }
 
-  return {
-      getAll: getAll,
-      add: add,
-      addListItem: addListItem
-  };
+    function showLoadingMessage() {
+        loadingMessage.style.display = 'block';
+    }
+
+    function hideLoadingMessage() {
+        loadingMessage.style.display = 'none';
+    }
+
+    function loadList() {
+        showLoadingMessage();
+        return fetch(apiUrl)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (json) {
+                json.results.forEach(function (item) {
+                    let pokemon = {
+                        name: item.name,
+                        detailsUrl: item.url
+                    };
+                    add(pokemon);
+                });
+                hideLoadingMessage();
+            })
+            .catch(function (err) {
+                console.error("Error loading Pokémon list:", err);
+                hideLoadingMessage();
+                // Optional: Display an error message to the user
+                let errorMessage = document.createElement('li');
+                errorMessage.textContent = "Error loading Pokémon. Please try again later.";
+                pokemonListContainer.appendChild(errorMessage);
+
+            });
+    }
+
+    function loadDetails(pokemon) {
+        showLoadingMessage();
+        let url = pokemon.detailsUrl;
+
+        return fetch(url)
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (details) {
+                pokemon.imgUrl = details.sprites.front_default;
+                pokemon.height = details.height;
+                hideLoadingMessage();
+            })
+            .catch(function (e) {
+                console.error("Error loading Pokémon details:", e);
+                hideLoadingMessage();
+                // Optional: Display an error message to the user (e.g., in a modal)
+                alert("Error loading details for " + pokemon.name + ". Please try again.");
+            });
+    }
+
+    function showDetails(pokemon) {
+        loadDetails(pokemon).then(function () {
+            console.log(pokemon);
+        });
+    }
+
+    return {
+        getAll: getAll,
+        add: add,
+        addListItem: addListItem,
+        loadList: loadList,
+        loadDetails: loadDetails
+    };
 })();
 
-// Loop through the Pokémon repository and create buttons for each
-pokemonRepository.getAll().forEach(function (pokemon) {
-  pokemonRepository.addListItem(pokemon);
+pokemonRepository.loadList().then(function () {
+    pokemonRepository.getAll().forEach(function (pokemon) {
+        pokemonRepository.addListItem(pokemon);
+    });
 });
