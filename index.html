@@ -10,8 +10,75 @@
         #loading-message {
             text-align: center;
             font-style: italic;
-            color: #7f8c8d; /* A subtle grey color */
-            margin-top: 20px; /* Add some space above the message */
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+            padding-top: 60px;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        /* Close button style */
+        .close {
+            color: #aaa;
+            font-size: 32px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #333;
+        }
+
+        /* Image Style */
+        #modal-pokemon-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+            }
+            .pokemon-button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -19,8 +86,17 @@
 <body>
     <h1>Pokémon List</h1>
     <div id="loading-message">Loading...</div>
-    <ul class="pokemon-list">
-        </ul>
+    <ul class="pokemon-list"></ul>
+
+    <!-- Modal for Pokémon details -->
+    <div id="pokemon-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h2 id="modal-pokemon-name"></h2>
+            <p id="modal-pokemon-height"></p>
+            <img id="modal-pokemon-img" alt="Pokémon Image">
+        </div>
+    </div>
 
     <script src="./JS/scripts.js"></script>
 </body>
