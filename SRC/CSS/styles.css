@@ -1,0 +1,63 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: radial-gradient( #3b3636, #7b7979);
+}
+
+/* Title Styling */
+h1 {
+    background-color: hsl(302, 15%, 51%);
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Pokémon Grid Layout */
+.pokemon-list .col {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* Pokémon Buttons */
+.pokemon-button {
+    width: 100%;
+    max-width: 220px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: capitalize;
+    border-radius: 8px;
+    border: 2px solid #000000; /* Added border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
+    margin: 10px; /* Added margin to separate buttons */
+    padding: 10px;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Added transition for shadow */
+}
+
+.pokemon-button:hover {
+    background-color: #5e0c61;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+}
+
+/* Modal Styling */
+.modal-title {
+    text-transform: capitalize;
+    font-size: 28px;
+}
+
+#modal-pokemon-img {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 15px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .pokemon-button {
+        font-size: 16px;
+    }
+}
