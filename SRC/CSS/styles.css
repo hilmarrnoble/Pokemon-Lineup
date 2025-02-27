@@ -1,7 +1,8 @@
 /* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: radial-gradient( #3b3636, #7b7979);
+    background: url('../IMG/PokemonBG.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 /* Title Styling */
